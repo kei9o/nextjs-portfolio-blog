@@ -10,21 +10,21 @@ const navItems = {
   // '/works': {
   //   name: 'works',
   //
-  '/about': {
-    name: 'about'
-  },
-  '/research': {
-    name: 'research'
-  },
-  '/photography': {
-    name: 'photography'
-  },
-  '/discography': {
-    name: 'discography'
-  },
-  '/contact': {
-    name: 'contact'
-  }
+  // '/about': {
+  //   name: 'about'
+  // },
+  // '/research': {
+  //   name: 'research'
+  // },
+  // '/photography': {
+  //   name: 'photography'
+  // },
+  // '/discography': {
+  //   name: 'discography'
+  // },
+  // '/contact': {
+  //   name: 'contact'
+  // }
 }
 
 export function Navbar() {
