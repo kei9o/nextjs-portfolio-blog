@@ -22,9 +22,9 @@ const navItems = {
   // '/discography': {
   //   name: 'discography'
   // },
-  // '/contact': {
-  //   name: 'contact'
-  // }
+  '/contact': {
+    name: 'contact'
+  }
 }
 
 export function Navbar() {
