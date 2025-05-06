@@ -67,7 +67,6 @@ jobs:
               echo "ENV_FILE_PRODUCTION secret is not set. Skipping .env.production creation."
             fi
 
-            # Install production dependencies
             pnpm install --prod --frozen-lockfile
 
             # Start the application
