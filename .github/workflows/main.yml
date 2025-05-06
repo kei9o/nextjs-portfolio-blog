@@ -36,7 +36,7 @@ jobs:
 
           echo "Copying .next directory..."
           cp -R .next deployment_package/
-        
+
           echo "Checking for public directory..."
           if [ -d "public" ]; then
             echo "'public' directory found. Copying..."
@@ -44,13 +44,13 @@ jobs:
           else
             echo "Warning: 'public' directory not found. Skipping copy."
           fi
-        
+
           echo "Copying package.json..."
           cp package.json deployment_package/
-        
+
           echo "Copying pnpm-lock.yaml..."
           cp pnpm-lock.yaml deployment_package/
-        
+
           echo "Checking for next.config.mjs file..."
           if [ -f "next.config.mjs" ]; then
             echo "'next.config.mjs' file found. Copying..."
@@ -58,7 +58,7 @@ jobs:
           else
             echo "Warning: 'next.config.mjs' file not found. Skipping copy."
           fi
-        
+
           echo "Contents of deployment_package:"
           ls -la deployment_package/
 
