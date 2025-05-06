@@ -62,7 +62,7 @@ jobs:
           echo "Contents of deployment_package:"
           ls -la deployment_package/
 
-          mkdir deployment_package
+          mkdir -p deployment_package
           cp -r .next deployment_package/
           cp -r public deployment_package/
           cp package.json deployment_package/
@@ -97,7 +97,6 @@ jobs:
               echo "ENV_FILE_PRODUCTION secret is not set. Skipping .env.production creation."
             fi
 
-            # Install production dependencies
             pnpm install --prod --frozen-lockfile
 
             # Start the application
