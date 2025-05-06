@@ -64,7 +64,7 @@ jobs:
 
           mkdir -p deployment_package
           cp -r .next deployment_package/
-          cp -r public deployment_package/
+          # cp -r public deployment_package/
           cp package.json deployment_package/
           cp pnpm-lock.yaml deployment_package/
           cp next.config.mjs deployment_package/
