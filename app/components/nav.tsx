@@ -9,10 +9,9 @@ const navItems = {
   // },
   // '/works': {
   //   name: 'works',
-  //
-  // '/about': {
-  //   name: 'about'
-  // },
+  '/about': {
+    name: 'about'
+  },
   // '/research': {
   //   name: 'research'
   // },
