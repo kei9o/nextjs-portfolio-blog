@@ -72,9 +72,9 @@ jobs:
       - name: Deploy to EC2 via SSH and rsync
         uses: easingthemes/ssh-deploy@v5.0.0
         with:
-          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          remote-host: ${{ secrets.EC2_HOST }}
-          remote-user: ${{ secrets.EC2_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.EC2_HOST }}
+          REMOTE_USER: ${{ secrets.EC2_USER }}
           source: 'deployment_package/*'
           target: ${{ secrets.EC2_TARGET }}
           args: '-avz --delete'
