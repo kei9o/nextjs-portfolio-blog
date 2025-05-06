@@ -32,36 +32,6 @@ jobs:
 
       - name: Prepare deployment package
         run: |
-          echo "Current directory contents before creating deployment_package:"
-          ls -la # <--- デバッグ情報追加: カレントディレクトリの内容を表示
-          echo "---"
-
-          mkdir deployment_package
-
-          echo "Copying .next directory..."
-          cp -R .next deployment_package/
-
-          echo "Checking for public directory..."
-          if [ -d "public" ]; then
-            echo "'public' directory found. Copying..."
-            cp -R public deployment_package/
-          else
-            echo "Warning: 'public' directory not found at $(pwd)/public. Skipping copy."
-          fi
-
-          echo "Copying package.json..."
-          cp package.json deployment_package/
-
-          echo "Copying pnpm-lock.yaml..."
-          cp pnpm-lock.yaml deployment_package/
-
-          echo "Copying next.config.mjs..."
-          cp next.config.mjs deployment_package/
-
-          echo "---"
-          echo "Contents of deployment_package:"
-          ls -la deployment_package/
-
           mkdir -p deployment_package
           cp -r .next deployment_package/
           cp -r public deployment_package/
