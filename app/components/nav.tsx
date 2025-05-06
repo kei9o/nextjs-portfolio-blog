@@ -9,10 +9,9 @@ const navItems = {
   // },
   // '/works': {
   //   name: 'works',
-  //
-  // '/about': {
-  //   name: 'about'
-  // },
+  '/about': {
+    name: 'about'
+  },
   // '/research': {
   //   name: 'research'
   // },
@@ -22,9 +21,9 @@ const navItems = {
   // '/discography': {
   //   name: 'discography'
   // },
-  // '/contact': {
-  //   name: 'contact'
-  // }
+  '/contact': {
+    name: 'contact'
+  }
 }
 
 export function Navbar() {
