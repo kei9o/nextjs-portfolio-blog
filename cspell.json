@@ -7,6 +7,7 @@
     "CUDA",
     "HLSL",
     "worktree",
-    "Kosei"
+    "Kosei",
+    "nextjs",
   ]
 }
