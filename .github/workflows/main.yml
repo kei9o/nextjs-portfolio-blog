@@ -1,1 +1,78 @@
+name: Deploy Next.js to EC2 (Build on Actions)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Next.js app
+        run: pnpm build
+
+      - name: Prepare deployment package
+        run: |
+          mkdir deployment_package
+          cp -r .next deployment_package/
+          cp -r public deployment_package/
+          cp package.json deployment_package/
+          cp pnpm-lock.yaml deployment_package/
+          cp next.config.mjs deployment_package/
+
+      - name: Deploy to EC2 via SSH and rsync
+        uses: easingthemes/ssh-deploy@v5.0.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          remote-host: ${{ secrets.EC2_HOST }}
+          remote-user: ${{ secrets.EC2_USER }}
+          source: 'deployment_package/*'
+          target: ${{ secrets.EC2_TARGET }}
+          args: '-avz --delete'
+
+      - name: Execute remote commands on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd ${{ secrets.EC2_TARGET }}
+
+            # Install production dependencies
+            if [ -n "${{ secrets.ENV_FILE_PRODUCTION }}" ]; then
+              echo "${{ secrets.ENV_FILE_PRODUCTION }}" > .env.production
+              echo ".env.production file created."
+            else
+              echo "ENV_FILE_PRODUCTION secret is not set. Skipping .env.production creation."
+            fi
+
+            # Install production dependencies
+            pnpm install --prod --frozen-lockfile
+
+            # Start the application
+            pm2 restart nextjs-portfolio-blog
+
+            echo "Deployment completed successfully."
+
 
