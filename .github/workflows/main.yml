@@ -85,7 +85,7 @@ jobs:
             echo "Prerequisites validated successfully"
 
       - name: Deploy to EC2 via SSH and rsync
-        uses: easingthemes/ssh-deploy@v5.2.0
+        uses: easingthemes/ssh-deploy@v5.1.0
         with:
           sshPrivateKey: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           remoteHost: ${{ secrets.EC2_HOST }}
