@@ -14,12 +14,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
           version: 9
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'pnpm'
@@ -32,7 +32,7 @@ jobs:
 
       - name: Prepare deployment package
         run: |
-          mkdir deployment_package
+          mkdir -p deployment_package
 
           echo "Copying .next directory..."
           cp -R .next deployment_package/
@@ -62,15 +62,30 @@ jobs:
           echo "Contents of deployment_package:"
           ls -la deployment_package/
 
-          mkdir -p deployment_package
-          cp -r .next deployment_package/
-          # cp -r public deployment_package/
-          cp package.json deployment_package/
-          cp pnpm-lock.yaml deployment_package/
-          # cp next.config.mjs deployment_package/
+      - name: Validate deployment prerequisites
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            # Validate required environment
+            if [ ! -d "${{ secrets.EC2_TARGET }}" ]; then
+              echo "Error: Target directory ${{ secrets.EC2_TARGET }} does not exist"
+              exit 1
+            fi
+            
+            # Check if Node.js environment is available
+            [ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh"
+            if ! command -v node >/dev/null 2>&1; then
+              echo "Error: Node.js is not available"
+              exit 1
+            fi
+            
+            echo "Prerequisites validated successfully"
 
       - name: Deploy to EC2 via SSH and rsync
-        uses: easingthemes/ssh-deploy@v5.0.0
+        uses: easingthemes/ssh-deploy@v5.2.0
         with:
           sshPrivateKey: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           remoteHost: ${{ secrets.EC2_HOST }}
@@ -89,6 +104,15 @@ jobs:
             set -e
             cd ${{ secrets.EC2_TARGET }}
 
+            # Source environment for Node.js and PM2
+            export PATH="$HOME/.nvm/versions/node/$(nvm current)/bin:$PATH"
+            [ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh"
+            [ -s "$HOME/.bashrc" ] && source "$HOME/.bashrc"
+
+            # Verify Node.js and PM2 are available
+            echo "Node.js version: $(node --version)"
+            echo "PM2 version: $(pm2 --version)"
+
             # Install production dependencies
             if [ -n "${{ secrets.ENV_FILE_PRODUCTION }}" ]; then
               echo "${{ secrets.ENV_FILE_PRODUCTION }}" > .env.production
@@ -97,11 +121,43 @@ jobs:
               echo "ENV_FILE_PRODUCTION secret is not set. Skipping .env.production creation."
             fi
 
+            echo "Installing production dependencies..."
             pnpm install --prod --frozen-lockfile
 
-            # Start the application
-            pm2 restart nextjs-portfolio-blog
+            # Check if PM2 process exists, restart if it does, start if it doesn't
+            if pm2 describe nextjs-portfolio-blog > /dev/null 2>&1; then
+              echo "PM2 process exists. Restarting..."
+              pm2 restart nextjs-portfolio-blog
+            else
+              echo "PM2 process doesn't exist. Starting new process..."
+              pm2 start npm --name "nextjs-portfolio-blog" -- start
+            fi
 
+            # Verify deployment
+            pm2 status nextjs-portfolio-blog
             echo "Deployment completed successfully."
+
+      - name: Validate deployment health
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            # Wait for application to start
+            sleep 10
+            
+            # Source environment
+            [ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh"
+            [ -s "$HOME/.bashrc" ] && source "$HOME/.bashrc"
+            
+            # Check if PM2 process is running
+            if ! pm2 describe nextjs-portfolio-blog | grep -q "online"; then
+              echo "Error: Application is not running properly"
+              pm2 logs nextjs-portfolio-blog --lines 20
+              exit 1
+            fi
+            
+            echo "Health check passed - Application is running successfully"
 
 
