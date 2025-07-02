@@ -8,10 +8,34 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Extract PR number from merge commit
+        id: pr_number
+        run: |
+          # Get the merge commit message
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MSG"
+          
+          # Extract PR number from merge commit message
+          PR_NUMBER=$(echo "$COMMIT_MSG" | grep -oP '(?<=Merge pull request #)\d+' || true)
+          
+          if [ -z "$PR_NUMBER" ]; then
+            echo "No PR number found in commit message (might be a direct push)"
+            echo "pr_found=false" >> $GITHUB_OUTPUT
+          else
+            echo "Found PR number: $PR_NUMBER"
+            echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+            echo "pr_found=true" >> $GITHUB_OUTPUT
+          fi
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
@@ -29,6 +53,27 @@ jobs:
 
       - name: Build Next.js app
         run: pnpm build
+
+      - name: Comment PR - Deployment Started
+        if: steps.pr_number.outputs.pr_found == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr_number = ${{ steps.pr_number.outputs.pr_number }};
+            const workflow_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr_number,
+              body: `## 🚀 Deployment Started\n\n` +
+                    `The deployment for this PR has been initiated.\n\n` +
+                    `**Status:** In Progress ⏳\n` +
+                    `**Workflow:** [View deployment progress](${workflow_url})\n` +
+                    `**Started at:** ${new Date().toISOString()}\n\n` +
+                    `I'll update this comment once the deployment completes.`
+            });
 
       - name: Prepare deployment package
         run: |
@@ -159,5 +204,56 @@ jobs:
             fi
             
             echo "Health check passed - Application is running successfully"
+
+      - name: Comment PR - Deployment Successful
+        if: steps.pr_number.outputs.pr_found == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr_number = ${{ steps.pr_number.outputs.pr_number }};
+            const workflow_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr_number,
+              body: `## ✅ Deployment Successful!\n\n` +
+                    `The deployment for this PR has completed successfully.\n\n` +
+                    `**Status:** Completed ✅\n` +
+                    `**Workflow:** [View full deployment log](${workflow_url})\n` +
+                    `**Completed at:** ${new Date().toISOString()}\n\n` +
+                    `### Deployment Summary\n` +
+                    `- ✅ Build completed\n` +
+                    `- ✅ Files deployed to EC2\n` +
+                    `- ✅ Application restarted\n` +
+                    `- ✅ Health check passed\n\n` +
+                    `Your changes are now live! 🎉`
+            });
+
+      - name: Comment PR - Deployment Failed
+        if: failure() && steps.pr_number.outputs.pr_found == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr_number = ${{ steps.pr_number.outputs.pr_number }};
+            const workflow_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr_number,
+              body: `## ❌ Deployment Failed\n\n` +
+                    `The deployment for this PR has failed. Please check the logs for details.\n\n` +
+                    `**Status:** Failed ❌\n` +
+                    `**Workflow:** [View error logs](${workflow_url})\n` +
+                    `**Failed at:** ${new Date().toISOString()}\n\n` +
+                    `### Next Steps\n` +
+                    `1. Check the [workflow logs](${workflow_url}) for specific error details\n` +
+                    `2. Fix any issues identified\n` +
+                    `3. Push additional commits to retry deployment\n\n` +
+                    `Please investigate and resolve the deployment issues.`
+            });
 
 
