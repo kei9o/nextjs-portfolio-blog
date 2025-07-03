@@ -28,8 +28,13 @@ const customJestConfig = {
   coverageReporters: ['text', 'lcov', 'html'],
   coverageDirectory: 'coverage',
   testMatch: [
-    '<rootDir>/__tests__/**/*.{js,jsx,ts,tsx}',
+    '<rootDir>/__tests__/**/*.{test,spec}.{js,jsx,ts,tsx}',
     '<rootDir>/app/**/*.{test,spec}.{js,jsx,ts,tsx}',
+  ],
+  testPathIgnorePatterns: [
+    '<rootDir>/.next/', 
+    '<rootDir>/node_modules/',
+    '<rootDir>/__tests__/utils/',
   ],
 }
 
