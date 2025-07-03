@@ -23,7 +23,7 @@ beforeAll(() => {
     getFullYear() {
       return MOCK_YEAR
     }
-  } as any
+  } as typeof Date
 })
 
 afterAll(() => {
