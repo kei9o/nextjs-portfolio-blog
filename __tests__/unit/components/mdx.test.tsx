@@ -177,7 +177,10 @@ describe('MDX Components', () => {
     })
 
     it('handles empty table data gracefully', () => {
-      const emptyData = { headers: [], rows: [] }
+      const emptyData: { headers: string[]; rows: string[][] } = {
+        headers: [],
+        rows: [],
+      }
 
       render(
         <table data-testid='empty-table'>
