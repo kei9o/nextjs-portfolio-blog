@@ -4,12 +4,12 @@ import { Navbar } from '@/app/components/nav'
 
 // Mock Next.js Link component
 jest.mock('next/link', () => {
-  return function MockLink({ 
-    children, 
-    href, 
+  return function MockLink({
+    children,
+    href,
     className,
-    ...props 
-  }: { 
+    ...props
+  }: {
     children: React.ReactNode
     href: string
     className?: string
@@ -70,7 +70,12 @@ describe('Navbar Component', () => {
       const nav = screen.getByRole('navigation')
       const flexContainer = nav.querySelector('.flex.flex-row.space-x-0')
       expect(flexContainer).toBeInTheDocument()
-      expect(flexContainer).toHaveClass('flex', 'flex-row', 'space-x-0', 'pr-10')
+      expect(flexContainer).toHaveClass(
+        'flex',
+        'flex-row',
+        'space-x-0',
+        'pr-10'
+      )
     })
   })
 
@@ -180,14 +185,14 @@ describe('Navbar Component', () => {
     it('renders navigation items in correct order', () => {
       const links = screen.getAllByRole('link')
       const linkTexts = links.map(link => link.textContent)
-      
+
       expect(linkTexts).toEqual(['home', 'about', 'contact'])
     })
 
     it('maintains consistent styling across all navigation links', () => {
       const links = screen.getAllByRole('link')
       const firstLinkClasses = links[0].className
-      
+
       links.forEach(link => {
         expect(link).toHaveClass(...firstLinkClasses.split(' '))
       })
@@ -222,11 +227,11 @@ describe('Navbar Component', () => {
       const user = userEvent.setup()
       const homeLink = screen.getByRole('link', { name: 'home' })
       const aboutLink = screen.getByRole('link', { name: 'about' })
-      
+
       // Focus first link
       await user.tab()
       expect(homeLink).toHaveFocus()
-      
+
       // Tab to next link
       await user.tab()
       expect(aboutLink).toHaveFocus()
@@ -235,7 +240,7 @@ describe('Navbar Component', () => {
     it('supports click navigation', async () => {
       const user = userEvent.setup()
       const homeLink = screen.getByRole('link', { name: 'home' })
-      
+
       // Click should not throw error (href handling is mocked)
       await user.click(homeLink)
       expect(homeLink).toHaveAttribute('href', '/')
@@ -247,7 +252,7 @@ describe('Navbar Component', () => {
       const aside = screen.getByRole('complementary')
       const nav = screen.getByRole('navigation')
       const links = screen.getAllByRole('link')
-      
+
       // Check DOM hierarchy
       expect(aside).toContainElement(nav)
       links.forEach(link => {
@@ -259,7 +264,7 @@ describe('Navbar Component', () => {
       const aside = screen.getByRole('complementary')
       const stickyContainer = aside.querySelector('.lg\\:sticky')
       const nav = screen.getByRole('navigation')
-      
+
       expect(stickyContainer).toContainElement(nav)
     })
 
@@ -267,7 +272,7 @@ describe('Navbar Component', () => {
       const nav = screen.getByRole('navigation')
       const flexContainer = nav.querySelector('.flex.flex-row.space-x-0.pr-10')
       const links = screen.getAllByRole('link')
-      
+
       expect(flexContainer).toBeInTheDocument()
       links.forEach(link => {
         expect(flexContainer).toContainElement(link)
@@ -305,9 +310,9 @@ describe('Navbar Component', () => {
         'relative',
         'py-1',
         'px-2',
-        'm-1'
+        'm-1',
       ]
-      
+
       links.forEach(link => {
         expectedClasses.forEach(className => {
           expect(link).toHaveClass(className)
