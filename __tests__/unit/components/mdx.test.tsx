@@ -37,7 +37,7 @@ jest.mock('next/image', () => {
 
 // Mock MDX Remote
 jest.mock('next-mdx-remote/rsc', () => ({
-  MDXRemote: ({ components, source, ...props }: any) => {
+  MDXRemote: ({ components, _source, ...props }: any) => {
     // Simulate rendering different components based on source content
     if (props['data-testid']) {
       return <div data-testid={props['data-testid']} {...props} />
