@@ -47,15 +47,11 @@ This project includes automated testing workflows that run on Pull Requests:
   - ESLint code quality checks
   - Code formatting validation
   - Unit test execution with coverage reports
-
-- **Manual Testing**: Use the `/test` magic keyword in PR comments
-  - Comment `/test` on any PR to trigger the full test suite
-  - Results are posted back to the PR with detailed coverage information
+  - Results posted as PR comments with detailed validation status
 
 ### Workflow Features
 
 - ✅ **Automatic validation** on PR creation and updates
-- ✅ **Manual trigger** with `/test` comment command
 - ✅ **Test coverage reporting** with artifacts
 - ✅ **Status updates** posted as PR comments
 - ✅ **Code quality checks** (ESLint, Prettier, TypeScript)

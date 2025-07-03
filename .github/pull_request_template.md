@@ -30,10 +30,7 @@ This PR will be automatically validated with:
 - ✅ ESLint code quality checks
 - ✅ Code formatting validation
 - ✅ Unit test execution with coverage
-
-### Manual Testing
-
-You can trigger additional testing by commenting `/test` on this PR.
+- ✅ Results posted as PR comments
 
 ### Before Merging
 

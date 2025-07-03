@@ -96,7 +96,7 @@ jobs:
             </details>
 
             ---
-            💡 **Tip:** You can also trigger tests manually by commenting \`/test\` on this PR.
+            🔄 **Automatic validation** runs on every PR update to ensure code quality.
             `;
 
             // Check if this is a comment update or new comment
