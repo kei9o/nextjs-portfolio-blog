@@ -79,7 +79,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            
+
             // Read coverage summary if available
             let coverageInfo = '';
             try {
@@ -95,29 +95,29 @@ jobs:
             } catch (error) {
               coverageInfo = '\n## Test Coverage\nCoverage report not available.';
             }
-            
+
             const jobStatus = '${{ job.status }}';
             const emoji = jobStatus === 'success' ? '✅' : '❌';
-            
+
             const comment = `${emoji} **Test Results** (triggered by \`/test\` command)
-            
+
             **Status:** ${jobStatus === 'success' ? 'PASSED' : 'FAILED'}
             **Workflow:** [View Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
             ${coverageInfo}
-            
+
             <details>
             <summary>Job Details</summary>
-            
+
             - **Type Check:** ${jobStatus === 'success' ? '✅ Passed' : '❌ Failed'}
             - **ESLint:** ${jobStatus === 'success' ? '✅ Passed' : '❌ Failed'}
             - **Unit Tests:** ${jobStatus === 'success' ? '✅ Passed' : '❌ Failed'}
-            
+
             </details>
-            
+
             ---
             *Triggered by: @${{ github.event.comment.user.login }}*
             `;
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

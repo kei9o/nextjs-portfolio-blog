@@ -55,7 +55,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            
+
             // Read coverage summary if available
             let coverageInfo = '';
             try {
@@ -71,42 +71,42 @@ jobs:
             } catch (error) {
               coverageInfo = '\n## Test Coverage\nCoverage report not available.';
             }
-            
+
             const jobStatus = '${{ job.status }}';
             const emoji = jobStatus === 'success' ? '✅' : '❌';
-            
+
             const comment = `${emoji} **PR Validation Results**
-            
+
             **Status:** ${jobStatus === 'success' ? 'PASSED' : 'FAILED'}
             **Workflow:** [View Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
             ${coverageInfo}
-            
+
             <details>
             <summary>Validation Details</summary>
-            
+
             - **Type Check:** ${jobStatus === 'success' ? '✅ Passed' : '❌ Failed'}
             - **ESLint:** ${jobStatus === 'success' ? '✅ Passed' : '❌ Failed'}
             - **Code Formatting:** ${jobStatus === 'success' ? '✅ Passed' : '❌ Failed'}
             - **Unit Tests:** ${jobStatus === 'success' ? '✅ Passed' : '❌ Failed'}
-            
+
             </details>
-            
+
             ---
             💡 **Tip:** You can also trigger tests manually by commenting \`/test\` on this PR.
             `;
-            
+
             // Check if this is a comment update or new comment
             const { data: comments } = await github.rest.issues.listComments({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
-            
+
             const existingComment = comments.find(comment => 
               comment.user.login === 'github-actions[bot]' && 
               comment.body.includes('PR Validation Results')
             );
-            
+
             if (existingComment) {
               await github.rest.issues.updateComment({
                 comment_id: existingComment.id,
