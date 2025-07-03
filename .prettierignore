@@ -1,0 +1,10 @@
+node_modules/
+.next/
+coverage/
+dist/
+build/
+*.config.js
+*.config.ts
+pnpm-lock.yaml
+.eslintignore
+.prettierignore
