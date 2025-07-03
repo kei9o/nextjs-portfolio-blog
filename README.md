@@ -1,5 +1,6 @@
 # nextjs-portfolio-blog
-[My portfolio blog ](https://kei9o.me/) based on [Portfolio Starter Kit](https://vercel.com/templates/next.js/portfolio-starter-kit)  ([source](https://github.com/vercel/examples/tree/main/solutions/blog)) by [Vercel](https://vercel.com/home)
+
+[My portfolio blog ](https://kei9o.me/) based on [Portfolio Starter Kit](https://vercel.com/templates/next.js/portfolio-starter-kit) ([source](https://github.com/vercel/examples/tree/main/solutions/blog)) by [Vercel](https://vercel.com/home)
 
 ## Development
 
@@ -19,6 +20,9 @@ pnpm run test:coverage
 ### Code Quality
 
 ```bash
+# Check TypeScript types
+pnpm run type-check
+
 # Check for linting issues
 pnpm run lint
 
@@ -31,3 +35,32 @@ pnpm run format
 # Check code formatting
 pnpm run format:check
 ```
+
+## CI/CD & Testing Workflows
+
+### Automated Testing
+This project includes automated testing workflows that run on Pull Requests:
+
+- **PR Validation**: Automatically runs on PR creation/updates
+  - TypeScript type checking
+  - ESLint code quality checks
+  - Code formatting validation
+  - Unit test execution with coverage reports
+
+- **Manual Testing**: Use the `/test` magic keyword in PR comments
+  - Comment `/test` on any PR to trigger the full test suite
+  - Results are posted back to the PR with detailed coverage information
+
+### Workflow Features
+- ✅ **Automatic validation** on PR creation and updates
+- ✅ **Manual trigger** with `/test` comment command
+- ✅ **Test coverage reporting** with artifacts
+- ✅ **Status updates** posted as PR comments
+- ✅ **Code quality checks** (ESLint, Prettier, TypeScript)
+
+### Before Merging
+All automated checks must pass before merging PRs. The workflows help ensure:
+- Code quality standards are maintained
+- All tests pass
+- TypeScript compilation succeeds
+- Code formatting is consistent
