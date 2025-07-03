@@ -3,13 +3,16 @@
 ## Issue #28: Test: MDX components unit tests
 
 ### Context
+
 You are working on implementing comprehensive unit tests for MDX-related components in the Next.js portfolio blog project.
 
 ### Target Component
+
 **File:** `app/components/mdx.tsx`
 **Components:** Multiple MDX components (110 lines total)
 
 ### Requirements
+
 - Create `__tests__/unit/components/mdx.test.tsx`
 - Test Table, CustomLink, RoundedImage, Code, Heading components
 - Test CustomMDX component composition
@@ -19,6 +22,7 @@ You are working on implementing comprehensive unit tests for MDX-related compone
 ### Key Components to Test
 
 #### 1. Table Component
+
 ```typescript
 // Test table structure rendering
 // Verify data prop handling
@@ -27,6 +31,7 @@ You are working on implementing comprehensive unit tests for MDX-related compone
 ```
 
 #### 2. CustomLink Component
+
 ```typescript
 // Test internal link handling
 // Test external link behavior
@@ -36,6 +41,7 @@ You are working on implementing comprehensive unit tests for MDX-related compone
 ```
 
 #### 3. RoundedImage Component
+
 ```typescript
 // Test image rendering
 // Verify alt text and src attributes
@@ -44,6 +50,7 @@ You are working on implementing comprehensive unit tests for MDX-related compone
 ```
 
 #### 4. Code Component
+
 ```typescript
 // Test code block rendering
 // Mock syntax highlighting (sugar-high)
@@ -52,6 +59,7 @@ You are working on implementing comprehensive unit tests for MDX-related compone
 ```
 
 #### 5. Heading Components (H1-H6)
+
 ```typescript
 // Test heading hierarchy
 // Verify slug generation
@@ -60,6 +68,7 @@ You are working on implementing comprehensive unit tests for MDX-related compone
 ```
 
 #### 6. CustomMDX Component
+
 ```typescript
 // Test component composition
 // Verify prop forwarding
@@ -68,7 +77,9 @@ You are working on implementing comprehensive unit tests for MDX-related compone
 ```
 
 ### Implementation Pattern
+
 Build on Footer, Nav, and Posts test patterns:
+
 - Use React Testing Library best practices
 - Mock complex external dependencies
 - Test component variants and props
@@ -76,6 +87,7 @@ Build on Footer, Nav, and Posts test patterns:
 - Include accessibility tests
 
 ### Dependencies to Mock
+
 ```typescript
 // MDX Remote
 jest.mock('next-mdx-remote/rsc', () => ({
@@ -106,6 +118,7 @@ jest.mock('next/image', () => {
 ```
 
 ### Sample Test Data
+
 ```typescript
 const mockTableData = {
   headers: ['Name', 'Value', 'Description'],
@@ -113,62 +126,69 @@ const mockTableData = {
     ['Item 1', '100', 'First item'],
     ['Item 2', '200', 'Second item'],
   ],
-};
+}
 
 const mockCodeProps = {
   children: 'console.log("Hello, World!");',
   className: 'language-javascript',
-};
+}
 
 const mockImageProps = {
   src: '/test-image.jpg',
   alt: 'Test image',
   width: 400,
   height: 300,
-};
+}
 ```
 
 ### Test Categories
 
 #### Component-Specific Tests
+
 - Test each component individually
 - Verify props handling
 - Check rendering output
 - Test component variants
 
 #### Integration Tests
+
 - Test CustomMDX component composition
 - Verify component mapping
 - Test prop forwarding
 - Check MDX integration
 
 #### Accessibility Tests
+
 - Test heading hierarchy
 - Verify ARIA attributes
 - Check keyboard navigation
 - Test screen reader compatibility
 
 #### Edge Cases
+
 - Test with missing props
 - Handle malformed data
 - Test error scenarios
 - Verify fallback behavior
 
 ### Coverage Goals
+
 - Achieve >90% code coverage
 - Test all component variants
 - Cover prop combinations
 - Include error handling
 
 ### Acceptance Criteria
+
 - [ ] Full MDX component test coverage
 - [ ] All component variants tested
 - [ ] Props validation included
 - [ ] Accessibility requirements covered
 - [ ] Visual regression prevention
-- [ ] >90% code coverage achieved
+- [ ] > 90% code coverage achieved
 
 ### Commands to Run
+
 ```bash
 # Run tests
 pnpm test mdx.test.tsx
@@ -181,6 +201,7 @@ pnpm test:watch mdx.test.tsx
 ```
 
 ### Next Steps
+
 1. Analyze all MDX components and their dependencies
 2. Set up comprehensive mocking strategy
 3. Create test file with component-specific test suites
