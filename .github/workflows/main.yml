@@ -24,10 +24,10 @@ jobs:
           # Get the merge commit message
           COMMIT_MSG=$(git log -1 --pretty=%B)
           echo "Commit message: $COMMIT_MSG"
-          
+
           # Extract PR number from merge commit message
           PR_NUMBER=$(echo "$COMMIT_MSG" | grep -oP '(?<=Merge pull request #)\d+' || true)
-          
+
           if [ -z "$PR_NUMBER" ]; then
             echo "No PR number found in commit message (might be a direct push)"
             echo "pr_found=false" >> $GITHUB_OUTPUT
@@ -62,7 +62,7 @@ jobs:
           script: |
             const pr_number = ${{ steps.pr_number.outputs.pr_number }};
             const workflow_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            
+
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -119,14 +119,14 @@ jobs:
               echo "Error: Target directory ${{ secrets.EC2_TARGET }} does not exist"
               exit 1
             fi
-            
+
             # Check if Node.js environment is available
             [ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh"
             if ! command -v node >/dev/null 2>&1; then
               echo "Error: Node.js is not available"
               exit 1
             fi
-            
+
             echo "Prerequisites validated successfully"
 
       - name: Deploy to EC2 via SSH and rsync
@@ -191,18 +191,18 @@ jobs:
           script: |
             # Wait for application to start
             sleep 10
-            
+
             # Source environment
             [ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh"
             [ -s "$HOME/.bashrc" ] && source "$HOME/.bashrc"
-            
+
             # Check if PM2 process is running
             if ! pm2 describe nextjs-portfolio-blog | grep -q "online"; then
               echo "Error: Application is not running properly"
               pm2 logs nextjs-portfolio-blog --lines 20
               exit 1
             fi
-            
+
             echo "Health check passed - Application is running successfully"
 
       - name: Comment PR - Deployment Successful
@@ -213,7 +213,7 @@ jobs:
           script: |
             const pr_number = ${{ steps.pr_number.outputs.pr_number }};
             const workflow_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            
+
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -239,7 +239,7 @@ jobs:
           script: |
             const pr_number = ${{ steps.pr_number.outputs.pr_number }};
             const workflow_url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            
+
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -255,5 +255,3 @@ jobs:
                     `3. Push additional commits to retry deployment\n\n` +
                     `Please investigate and resolve the deployment issues.`
             });
-
-

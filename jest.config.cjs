@@ -31,7 +31,7 @@ const customJestConfig = {
     '<rootDir>/app/**/*.{test,spec}.{js,jsx,ts,tsx}',
   ],
   testPathIgnorePatterns: [
-    '<rootDir>/.next/', 
+    '<rootDir>/.next/',
     '<rootDir>/node_modules/',
     '<rootDir>/__tests__/utils/',
   ],
