@@ -38,3 +38,7 @@ next-env.d.ts
 
 # direnv
 .envrc
+
+# claude and gemini config files
+CLAUDE.md
+GEMINI.md
