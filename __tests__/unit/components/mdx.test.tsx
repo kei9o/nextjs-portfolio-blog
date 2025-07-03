@@ -4,11 +4,11 @@ import { CustomMDX } from '@/app/components/mdx'
 
 // Mock Next.js components
 jest.mock('next/link', () => {
-  return function MockLink({ 
-    children, 
-    href, 
-    ...props 
-  }: { 
+  return function MockLink({
+    children,
+    href,
+    ...props
+  }: {
     children: React.ReactNode
     href: string
   }) {
@@ -21,19 +21,17 @@ jest.mock('next/link', () => {
 })
 
 jest.mock('next/image', () => {
-  return function MockImage({ 
-    src, 
-    alt, 
+  return function MockImage({
+    src,
+    alt,
     className,
-    ...props 
-  }: { 
+    ...props
+  }: {
     src: string
     alt: string
     className?: string
   }) {
-    return (
-      <img src={src} alt={alt} className={className} {...props} />
-    )
+    return <img src={src} alt={alt} className={className} {...props} />
   }
 })
 
@@ -44,12 +42,12 @@ jest.mock('next-mdx-remote/rsc', () => ({
     if (props['data-testid']) {
       return <div data-testid={props['data-testid']} {...props} />
     }
-    
+
     // Return a simple div that shows available components
     return (
-      <div data-testid="mdx-remote" {...props}>
+      <div data-testid='mdx-remote' {...props}>
         {components && (
-          <div data-testid="available-components">
+          <div data-testid='available-components'>
             {Object.keys(components).join(', ')}
           </div>
         )}
@@ -60,7 +58,9 @@ jest.mock('next-mdx-remote/rsc', () => ({
 
 // Mock syntax highlighter
 jest.mock('sugar-high', () => ({
-  highlight: jest.fn((code: string) => `<span class="highlighted">${code}</span>`),
+  highlight: jest.fn(
+    (code: string) => `<span class="highlighted">${code}</span>`
+  ),
 }))
 
 // Import the mocked highlight function
@@ -81,20 +81,20 @@ describe('MDX Components', () => {
       rows: [
         ['John', '25', 'New York'],
         ['Jane', '30', 'Los Angeles'],
-        ['Bob', '35', 'Chicago']
-      ]
+        ['Bob', '35', 'Chicago'],
+      ],
     }
 
     it('renders table with correct structure', () => {
       // Since Table isn't exported, we'll test it through CustomMDX
       render(
-        <CustomMDX 
-          data-testid="table-test"
+        <CustomMDX
+          data-testid='table-test'
           components={{
             Table: ({ data }: any) => {
-              const headers = data.headers.map((header: string, index: number) => (
-                <th key={index}>{header}</th>
-              ))
+              const headers = data.headers.map(
+                (header: string, index: number) => <th key={index}>{header}</th>
+              )
               const rows = data.rows.map((row: string[], index: number) => (
                 <tr key={index}>
                   {row.map((cell: string, cellIndex: number) => (
@@ -103,14 +103,14 @@ describe('MDX Components', () => {
                 </tr>
               ))
               return (
-                <table data-testid="custom-table">
+                <table data-testid='custom-table'>
                   <thead>
                     <tr>{headers}</tr>
                   </thead>
                   <tbody>{rows}</tbody>
                 </table>
               )
-            }
+            },
           }}
         />
       )
@@ -121,7 +121,7 @@ describe('MDX Components', () => {
 
     it('renders table headers correctly', () => {
       render(
-        <table data-testid="test-table">
+        <table data-testid='test-table'>
           <thead>
             <tr>
               {mockTableData.headers.map((header, index) => (
@@ -148,7 +148,7 @@ describe('MDX Components', () => {
 
     it('renders table rows correctly', () => {
       render(
-        <table data-testid="test-table">
+        <table data-testid='test-table'>
           <thead>
             <tr>
               {mockTableData.headers.map((header, index) => (
@@ -178,9 +178,9 @@ describe('MDX Components', () => {
 
     it('handles empty table data gracefully', () => {
       const emptyData = { headers: [], rows: [] }
-      
+
       render(
-        <table data-testid="empty-table">
+        <table data-testid='empty-table'>
           <thead>
             <tr>
               {emptyData.headers.map((header, index) => (
@@ -202,7 +202,7 @@ describe('MDX Components', () => {
 
       const table = screen.getByTestId('empty-table')
       expect(table).toBeInTheDocument()
-      
+
       const thead = table.querySelector('thead tr')
       const tbody = table.querySelector('tbody')
       expect(thead?.children).toHaveLength(0)
@@ -213,19 +213,23 @@ describe('MDX Components', () => {
   describe('CustomLink Component', () => {
     it('renders internal links with Next.js Link', () => {
       render(
-        <CustomMDX 
-          data-testid="link-test"
+        <CustomMDX
+          data-testid='link-test'
           components={{
             a: ({ href, children, ...props }: any) => {
               if (href.startsWith('/')) {
                 return (
-                  <a href={href} data-testid="internal-link" {...props}>
+                  <a href={href} data-testid='internal-link' {...props}>
                     {children}
                   </a>
                 )
               }
-              return <a href={href} {...props}>{children}</a>
-            }
+              return (
+                <a href={href} {...props}>
+                  {children}
+                </a>
+              )
+            },
           }}
         />
       )
@@ -236,11 +240,11 @@ describe('MDX Components', () => {
 
     it('renders external links with security attributes', () => {
       render(
-        <a 
-          href="https://example.com" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          data-testid="external-link"
+        <a
+          href='https://example.com'
+          target='_blank'
+          rel='noopener noreferrer'
+          data-testid='external-link'
         >
           External Link
         </a>
@@ -254,7 +258,7 @@ describe('MDX Components', () => {
 
     it('renders hash/anchor links correctly', () => {
       render(
-        <a href="#section" data-testid="anchor-link">
+        <a href='#section' data-testid='anchor-link'>
           Go to section
         </a>
       )
@@ -268,9 +272,20 @@ describe('MDX Components', () => {
     it('handles different link types correctly', () => {
       render(
         <div>
-          <a href="/internal" data-testid="internal">Internal</a>
-          <a href="#anchor" data-testid="anchor">Anchor</a>
-          <a href="https://external.com" target="_blank" rel="noopener noreferrer" data-testid="external">External</a>
+          <a href='/internal' data-testid='internal'>
+            Internal
+          </a>
+          <a href='#anchor' data-testid='anchor'>
+            Anchor
+          </a>
+          <a
+            href='https://external.com'
+            target='_blank'
+            rel='noopener noreferrer'
+            data-testid='external'
+          >
+            External
+          </a>
         </div>
       )
 
@@ -288,11 +303,11 @@ describe('MDX Components', () => {
   describe('RoundedImage Component', () => {
     it('renders image with rounded styling', () => {
       render(
-        <img 
-          src="/test-image.jpg" 
-          alt="Test image" 
-          className="rounded-lg"
-          data-testid="rounded-image"
+        <img
+          src='/test-image.jpg'
+          alt='Test image'
+          className='rounded-lg'
+          data-testid='rounded-image'
         />
       )
 
@@ -304,13 +319,13 @@ describe('MDX Components', () => {
 
     it('passes through all props correctly', () => {
       render(
-        <img 
-          src="/test.jpg" 
-          alt="Test" 
-          className="rounded-lg"
-          width="400"
-          height="300"
-          data-testid="image-with-props"
+        <img
+          src='/test.jpg'
+          alt='Test'
+          className='rounded-lg'
+          width='400'
+          height='300'
+          data-testid='image-with-props'
         />
       )
 
@@ -322,11 +337,11 @@ describe('MDX Components', () => {
 
     it('handles missing alt text gracefully', () => {
       render(
-        <img 
-          src="/test.jpg" 
-          alt=""
-          className="rounded-lg"
-          data-testid="image-no-alt"
+        <img
+          src='/test.jpg'
+          alt=''
+          className='rounded-lg'
+          data-testid='image-no-alt'
         />
       )
 
@@ -338,35 +353,37 @@ describe('MDX Components', () => {
 
   describe('Code Component', () => {
     beforeEach(() => {
-      mockHighlight.mockReturnValue('<span class="highlighted">console.log("test")</span>')
+      mockHighlight.mockReturnValue(
+        '<span class="highlighted">console.log("test")</span>'
+      )
     })
 
     it('renders highlighted code correctly', () => {
       render(
-        <code 
-          data-testid="code-block"
-          dangerouslySetInnerHTML={{ 
-            __html: '<span class="highlighted">console.log("test")</span>' 
+        <code
+          data-testid='code-block'
+          dangerouslySetInnerHTML={{
+            __html: '<span class="highlighted">console.log("test")</span>',
           }}
         />
       )
 
       const codeBlock = screen.getByTestId('code-block')
       expect(codeBlock).toBeInTheDocument()
-      
+
       const highlightedContent = codeBlock.querySelector('.highlighted')
       expect(highlightedContent).toBeInTheDocument()
     })
 
     it('calls highlight function with correct parameters', () => {
       const testCode = 'console.log("Hello, World!");'
-      
+
       // Simulate the Code component behavior
       const highlightedHTML = mockHighlight(testCode)
-      
+
       render(
-        <code 
-          data-testid="highlighted-code"
+        <code
+          data-testid='highlighted-code'
           dangerouslySetInnerHTML={{ __html: highlightedHTML }}
         />
       )
@@ -378,19 +395,19 @@ describe('MDX Components', () => {
     it('handles different programming languages', () => {
       const jsCode = 'const x = 5;'
       const pyCode = 'print("hello")'
-      
+
       mockHighlight
         .mockReturnValueOnce('<span class="js">const x = 5;</span>')
         .mockReturnValueOnce('<span class="py">print("hello")</span>')
 
       render(
         <div>
-          <code 
-            data-testid="js-code"
+          <code
+            data-testid='js-code'
             dangerouslySetInnerHTML={{ __html: mockHighlight(jsCode) }}
           />
-          <code 
-            data-testid="py-code"
+          <code
+            data-testid='py-code'
             dangerouslySetInnerHTML={{ __html: mockHighlight(pyCode) }}
           />
         </div>
@@ -402,10 +419,10 @@ describe('MDX Components', () => {
 
     it('handles empty code blocks', () => {
       mockHighlight.mockReturnValue('')
-      
+
       render(
-        <code 
-          data-testid="empty-code"
+        <code
+          data-testid='empty-code'
           dangerouslySetInnerHTML={{ __html: mockHighlight('') }}
         />
       )
@@ -420,16 +437,16 @@ describe('MDX Components', () => {
     it('renders headings with correct hierarchy', () => {
       render(
         <div>
-          <h1 id="heading-1" data-testid="h1">
-            <a href="#heading-1" className="anchor"></a>
+          <h1 id='heading-1' data-testid='h1'>
+            <a href='#heading-1' className='anchor'></a>
             Heading 1
           </h1>
-          <h2 id="heading-2" data-testid="h2">
-            <a href="#heading-2" className="anchor"></a>
+          <h2 id='heading-2' data-testid='h2'>
+            <a href='#heading-2' className='anchor'></a>
             Heading 2
           </h2>
-          <h3 id="heading-3" data-testid="h3">
-            <a href="#heading-3" className="anchor"></a>
+          <h3 id='heading-3' data-testid='h3'>
+            <a href='#heading-3' className='anchor'></a>
             Heading 3
           </h3>
         </div>
@@ -447,12 +464,12 @@ describe('MDX Components', () => {
     it('generates correct slugs for headings', () => {
       render(
         <div>
-          <h1 id="hello-world" data-testid="slug-test">
-            <a href="#hello-world" className="anchor"></a>
+          <h1 id='hello-world' data-testid='slug-test'>
+            <a href='#hello-world' className='anchor'></a>
             Hello World
           </h1>
-          <h2 id="this-and-that" data-testid="special-chars">
-            <a href="#this-and-that" className="anchor"></a>
+          <h2 id='this-and-that' data-testid='special-chars'>
+            <a href='#this-and-that' className='anchor'></a>
             This & That
           </h2>
         </div>
@@ -467,8 +484,12 @@ describe('MDX Components', () => {
 
     it('includes anchor links in headings', () => {
       render(
-        <h1 id="test-heading" data-testid="heading-with-anchor">
-          <a href="#test-heading" className="anchor" data-testid="anchor-link"></a>
+        <h1 id='test-heading' data-testid='heading-with-anchor'>
+          <a
+            href='#test-heading'
+            className='anchor'
+            data-testid='anchor-link'
+          ></a>
           Test Heading
         </h1>
       )
@@ -483,8 +504,8 @@ describe('MDX Components', () => {
 
     it('handles complex heading text correctly', () => {
       render(
-        <h2 id="complex-heading-with-numbers-123" data-testid="complex-heading">
-          <a href="#complex-heading-with-numbers-123" className="anchor"></a>
+        <h2 id='complex-heading-with-numbers-123' data-testid='complex-heading'>
+          <a href='#complex-heading-with-numbers-123' className='anchor'></a>
           Complex Heading with Numbers 123!
         </h2>
       )
@@ -502,13 +523,13 @@ describe('MDX Components', () => {
         { input: 'This & That', expected: 'this-and-that' },
         { input: 'Multiple   Spaces', expected: 'multiple-spaces' },
         { input: 'Special!@#$%Characters', expected: 'specialcharacters' },
-        { input: 'Numbers 123 Test', expected: 'numbers-123-test' }
+        { input: 'Numbers 123 Test', expected: 'numbers-123-test' },
       ]
 
       testCases.forEach(({ input, expected }) => {
         render(
           <h1 id={expected} data-testid={`slug-${expected}`}>
-            <a href={`#${expected}`} className="anchor"></a>
+            <a href={`#${expected}`} className='anchor'></a>
             {input}
           </h1>
         )
@@ -521,48 +542,48 @@ describe('MDX Components', () => {
 
   describe('CustomMDX Component', () => {
     it('renders MDXRemote with correct props', () => {
-      render(<CustomMDX data-testid="custom-mdx" />)
+      render(<CustomMDX data-testid='custom-mdx' />)
 
       const mdxContainer = screen.getByTestId('custom-mdx')
       expect(mdxContainer).toBeInTheDocument()
     })
 
     it('includes all required components', () => {
-      render(<CustomMDX data-testid="mdx-with-components" />)
+      render(<CustomMDX data-testid='mdx-with-components' />)
 
       const mdxContainer = screen.getByTestId('mdx-with-components')
       expect(mdxContainer).toBeInTheDocument()
-      
+
       // The CustomMDX component should render successfully with default components
       expect(mdxContainer).toBeInTheDocument()
     })
 
     it('merges custom components with default components', () => {
       const customComponents = {
-        p: (props: any) => <p className="custom-paragraph" {...props} />,
-        span: (props: any) => <span className="custom-span" {...props} />
+        p: (props: any) => <p className='custom-paragraph' {...props} />,
+        span: (props: any) => <span className='custom-span' {...props} />,
       }
 
       render(
-        <CustomMDX 
-          data-testid="mdx-custom-components"
+        <CustomMDX
+          data-testid='mdx-custom-components'
           components={customComponents}
         />
       )
 
       const mdxContainer = screen.getByTestId('mdx-custom-components')
       expect(mdxContainer).toBeInTheDocument()
-      
+
       // The CustomMDX component should render successfully with custom components
       expect(mdxContainer).toBeInTheDocument()
     })
 
     it('passes through additional props correctly', () => {
       render(
-        <CustomMDX 
-          data-testid="mdx-with-props"
-          className="custom-class"
-          id="custom-id"
+        <CustomMDX
+          data-testid='mdx-with-props'
+          className='custom-class'
+          id='custom-id'
         />
       )
 
@@ -575,25 +596,32 @@ describe('MDX Components', () => {
   describe('Component Integration', () => {
     it('all components work together in MDX context', () => {
       render(
-        <CustomMDX 
-          data-testid="integrated-components"
+        <CustomMDX
+          data-testid='integrated-components'
           components={{
             // Simulate a complete MDX document with all component types
             h1: ({ children }: any) => (
-              <h1 id="test-heading" data-testid="integrated-h1">
-                <a href="#test-heading" className="anchor"></a>
+              <h1 id='test-heading' data-testid='integrated-h1'>
+                <a href='#test-heading' className='anchor'></a>
                 {children}
               </h1>
             ),
             a: ({ href, children }: any) => (
-              <a href={href} data-testid="integrated-link">{children}</a>
+              <a href={href} data-testid='integrated-link'>
+                {children}
+              </a>
             ),
             img: ({ src, alt }: any) => (
-              <img src={src} alt={alt} className="rounded-lg" data-testid="integrated-img" />
+              <img
+                src={src}
+                alt={alt}
+                className='rounded-lg'
+                data-testid='integrated-img'
+              />
             ),
             code: ({ children }: any) => (
-              <code data-testid="integrated-code">{children}</code>
-            )
+              <code data-testid='integrated-code'>{children}</code>
+            ),
           }}
         />
       )
@@ -604,30 +632,37 @@ describe('MDX Components', () => {
 
     it('handles component composition correctly', () => {
       render(
-        <div data-testid="component-composition">
-          <h1 id="main-heading">
-            <a href="#main-heading" className="anchor"></a>
+        <div data-testid='component-composition'>
+          <h1 id='main-heading'>
+            <a href='#main-heading' className='anchor'></a>
             Main Heading
           </h1>
-          <a href="/internal" data-testid="internal-link">Internal Link</a>
-          <a href="https://external.com" target="_blank" rel="noopener noreferrer" data-testid="external-link">
+          <a href='/internal' data-testid='internal-link'>
+            Internal Link
+          </a>
+          <a
+            href='https://external.com'
+            target='_blank'
+            rel='noopener noreferrer'
+            data-testid='external-link'
+          >
             External Link
           </a>
-          <img src="/test.jpg" alt="Test" className="rounded-lg" />
-          <code data-testid="code-sample">console.log('test')</code>
+          <img src='/test.jpg' alt='Test' className='rounded-lg' />
+          <code data-testid='code-sample'>console.log('test')</code>
         </div>
       )
 
       const composition = screen.getByTestId('component-composition')
       expect(composition).toBeInTheDocument()
-      
+
       const internalLink = screen.getByTestId('internal-link')
       const externalLink = screen.getByTestId('external-link')
       const codeSample = screen.getByTestId('code-sample')
 
       expect(internalLink).toHaveAttribute('href', '/internal')
       expect(externalLink).toHaveAttribute('target', '_blank')
-      expect(codeSample).toHaveTextContent('console.log(\'test\')')
+      expect(codeSample).toHaveTextContent("console.log('test')")
     })
   })
 
@@ -635,12 +670,12 @@ describe('MDX Components', () => {
     it('headings have proper semantic structure', () => {
       render(
         <div>
-          <h1 id="main-title" data-testid="main-heading">
-            <a href="#main-title" className="anchor"></a>
+          <h1 id='main-title' data-testid='main-heading'>
+            <a href='#main-title' className='anchor'></a>
             Main Title
           </h1>
-          <h2 id="sub-title" data-testid="sub-heading">
-            <a href="#sub-title" className="anchor"></a>
+          <h2 id='sub-title' data-testid='sub-heading'>
+            <a href='#sub-title' className='anchor'></a>
             Sub Title
           </h2>
         </div>
@@ -658,11 +693,20 @@ describe('MDX Components', () => {
     it('links have proper accessibility attributes', () => {
       render(
         <div>
-          <a href="/internal" data-testid="internal-link">Internal Link</a>
-          <a href="https://external.com" target="_blank" rel="noopener noreferrer" data-testid="external-link">
+          <a href='/internal' data-testid='internal-link'>
+            Internal Link
+          </a>
+          <a
+            href='https://external.com'
+            target='_blank'
+            rel='noopener noreferrer'
+            data-testid='external-link'
+          >
             External Link
           </a>
-          <a href="#section" data-testid="anchor-link">Section Link</a>
+          <a href='#section' data-testid='anchor-link'>
+            Section Link
+          </a>
         </div>
       )
 
@@ -673,11 +717,11 @@ describe('MDX Components', () => {
 
     it('images have proper alt attributes', () => {
       render(
-        <img 
-          src="/test.jpg" 
-          alt="Descriptive alt text" 
-          className="rounded-lg"
-          data-testid="accessible-image"
+        <img
+          src='/test.jpg'
+          alt='Descriptive alt text'
+          className='rounded-lg'
+          data-testid='accessible-image'
         />
       )
 
@@ -686,11 +730,7 @@ describe('MDX Components', () => {
     })
 
     it('code blocks are properly labeled', () => {
-      render(
-        <code data-testid="accessible-code">
-          const example = 'code';
-        </code>
-      )
+      render(<code data-testid='accessible-code'>const example = 'code';</code>)
 
       const codeBlock = screen.getByTestId('accessible-code')
       expect(codeBlock.tagName).toBe('CODE')
