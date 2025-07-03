@@ -3,13 +3,16 @@
 ## Issue #27: Test: Posts component unit tests
 
 ### Context
+
 You are working on implementing comprehensive unit tests for the Posts component in the Next.js portfolio blog project.
 
 ### Target Component
+
 **File:** `app/components/posts.tsx`
 **Component:** `BlogPosts` function (37 lines)
 
 ### Requirements
+
 - Create `__tests__/unit/components/posts.test.tsx`
 - Mock blog utilities and data fetching
 - Test rendering, sorting, and edge cases
@@ -19,6 +22,7 @@ You are working on implementing comprehensive unit tests for the Posts component
 ### Key Test Cases to Implement
 
 #### 1. Basic Rendering Tests
+
 ```typescript
 // Test posts container renders
 // Verify posts list display
@@ -26,6 +30,7 @@ You are working on implementing comprehensive unit tests for the Posts component
 ```
 
 #### 2. Data Fetching and Mocking Tests
+
 ```typescript
 // Mock getBlogPosts() function
 // Mock formatDate() utility
@@ -34,6 +39,7 @@ You are working on implementing comprehensive unit tests for the Posts component
 ```
 
 #### 3. Post Metadata Tests
+
 ```typescript
 // Test post title rendering
 // Verify post date formatting
@@ -42,6 +48,7 @@ You are working on implementing comprehensive unit tests for the Posts component
 ```
 
 #### 4. Sorting and Filtering Tests
+
 ```typescript
 // Test posts sorting (newest first)
 // Verify chronological order
@@ -49,6 +56,7 @@ You are working on implementing comprehensive unit tests for the Posts component
 ```
 
 #### 5. Edge Cases Tests
+
 ```typescript
 // Test empty state handling
 // Test with no posts
@@ -57,7 +65,9 @@ You are working on implementing comprehensive unit tests for the Posts component
 ```
 
 ### Implementation Pattern
+
 Follow the Footer test patterns and build on Nav component tests:
+
 - Use React Testing Library best practices
 - Mock external dependencies properly
 - Test user-facing behavior
@@ -65,6 +75,7 @@ Follow the Footer test patterns and build on Nav component tests:
 - Include comprehensive data scenarios
 
 ### Dependencies to Mock
+
 ```typescript
 // Blog utilities
 jest.mock('app/lib/blog', () => ({
@@ -81,6 +92,7 @@ jest.mock('next/link', () => {
 ```
 
 ### Sample Test Data
+
 ```typescript
 const mockPosts = [
   {
@@ -90,8 +102,8 @@ const mockPosts = [
     metadata: {
       title: 'Test Post 1',
       publishedAt: '2024-01-01',
-      summary: 'Test summary 1'
-    }
+      summary: 'Test summary 1',
+    },
   },
   {
     title: 'Test Post 2',
@@ -100,26 +112,29 @@ const mockPosts = [
     metadata: {
       title: 'Test Post 2',
       publishedAt: '2024-01-02',
-      summary: 'Test summary 2'
-    }
-  }
-];
+      summary: 'Test summary 2',
+    },
+  },
+]
 ```
 
 ### Coverage Goals
+
 - Achieve >90% code coverage
 - Test all data scenarios
 - Cover sorting and filtering logic
 - Include edge cases and error handling
 
 ### Acceptance Criteria
+
 - [ ] All tests pass
 - [ ] Mocking strategy established for async data
 - [ ] Good edge case coverage maintained
 - [ ] Fast and isolated tests
-- [ ] >90% code coverage achieved
+- [ ] > 90% code coverage achieved
 
 ### Commands to Run
+
 ```bash
 # Run tests
 pnpm test posts.test.tsx
@@ -132,6 +147,7 @@ pnpm test:watch posts.test.tsx
 ```
 
 ### Next Steps
+
 1. Analyze the Posts component and its dependencies
 2. Set up comprehensive mocking strategy
 3. Create test file with all scenarios
