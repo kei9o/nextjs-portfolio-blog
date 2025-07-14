@@ -37,11 +37,6 @@ updates:
           - 'tailwindcss'
           - '@tailwindcss/*'
         dependency-type: 'production'
-    # Ignore specific dependencies if needed
-    ignore:
-      # Add any dependencies that should not be updated automatically
-      # - dependency-name: "example-package"
-      #   versions: ["1.x", "2.x"]
     # Labels to apply to PRs
     labels:
       - 'dependencies'
