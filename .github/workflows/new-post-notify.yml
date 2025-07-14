@@ -1,0 +1,55 @@
+name: Notify on New Blog Post
+
+on:
+  push:
+    paths:
+      - 'app/blog/posts/**.mdx'
+    branches:
+      - main
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get New Post Details
+        id: post_details
+        run: |
+          # Get the most recently added .mdx file
+          new_post=$(git diff --name-only --diff-filter=A HEAD~1 HEAD | grep 'app/blog/posts/.*\.mdx')
+          if [ -z "$new_post" ]; then
+            echo "No new blog post found."
+            exit 0
+          fi
+
+          # Extract title and excerpt from the .mdx file
+          title=$(grep -m 1 'title:' "$new_post" | sed 's/title: //' | tr -d '"' | tr -d "'")
+          excerpt=$(grep -m 1 'excerpt:' "$new_post" | sed 's/excerpt: //' | tr -d '"' | tr -d "'")
+          slug=$(basename "$new_post" .mdx)
+
+          echo "title=$title" >> $GITHUB_OUTPUT
+          echo "excerpt=$excerpt" >> $GITHUB_OUTPUT
+          echo "slug=$slug" >> $GITHUB_OUTPUT
+
+      - name: Send Discord Notification
+        if: steps.post_details.outputs.title
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -H "Content-Type: application/json" \
+               -d '{
+                 "embeds": [{
+                   "title": "🎉 New Blog Post Published",
+                   "description": "A new blog post has been published.",
+                   "color": 15844367,
+                   "fields": [
+                     { "name": "Title", "value": "${{ steps.post_details.outputs.title }}" },
+                     { "name": "Excerpt", "value": "${{ steps.post_details.outputs.excerpt }}" },
+                     { "name": "Link", "value": "[Read more](https://portfolio.kei9o.dev/blog/${{ steps.post_details.outputs.slug }})" }
+                   ],
+                   "timestamp": "'$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")'"
+                 }]
+               }' \
+               $DISCORD_WEBHOOK_URL
