@@ -52,9 +52,16 @@ jobs:
 
       - name: Approve PR
         if: steps.auto-merge-check.outputs.auto_merge == 'true'
-        run: gh pr review --approve "$PR_URL"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              event: 'APPROVE'
+            })
         env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Enable auto-merge
