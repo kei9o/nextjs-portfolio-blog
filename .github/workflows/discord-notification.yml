@@ -1,0 +1,22 @@
+name: Discord Notification
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Send Discord Notification
+        uses: tsickert/discord-webhook@v5
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          content: |
+            New push to main branch by ${{ github.actor }}
+            Commit message: ${{ github.event.head_commit.message }}
+            See changes: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
