@@ -20,19 +20,19 @@ jobs:
         id: dependabot-metadata
         uses: dependabot/fetch-metadata@v2
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
 
       - name: Check if auto-merge is allowed
         id: auto-merge-check
         run: |
           update_type="${{ steps.dependabot-metadata.outputs.update-type }}"
           dependency_type="${{ steps.dependabot-metadata.outputs.dependency-type }}"
-          
+
           # Auto-merge conditions
           # 1. Only for minor and patch updates
           # 2. Skip if it's a security update
           # 3. Development dependencies get more lenient treatment
-          
+
           if [[ "$update_type" == "version-update:semver-patch" ]] || [[ "$update_type" == "version-update:semver-minor" ]]; then
             echo "auto_merge=true" >> $GITHUB_OUTPUT
             echo "✅ Auto-merge allowed for $update_type"
@@ -71,17 +71,17 @@ jobs:
           script: |
             const updateType = '${{ steps.dependabot-metadata.outputs.update-type }}';
             const dependencyNames = '${{ steps.dependabot-metadata.outputs.dependency-names }}';
-            
+
             const comment = `## 🔍 Manual Review Required
-            
+
             This Dependabot PR requires manual review because:
             - Update type: **${updateType}**
             - Dependencies: ${dependencyNames}
-            
+
             Major version updates require manual review to ensure compatibility.
-            
+
             Please review the changes and merge manually if appropriate.`;
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

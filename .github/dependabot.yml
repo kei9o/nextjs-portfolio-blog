@@ -4,39 +4,39 @@
 version: 2
 updates:
   # JavaScript dependencies
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "Asia/Tokyo"
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Asia/Tokyo'
     open-pull-requests-limit: 10
     # Group non-critical updates
     groups:
       # Group all development dependencies
       dev-dependencies:
         patterns:
-          - "@eslint/*"
-          - "@typescript-eslint/*"
-          - "@testing-library/*"
-          - "@types/*"
-          - "eslint*"
-          - "prettier*"
-          - "jest*"
-        dependency-type: "development"
+          - '@eslint/*'
+          - '@typescript-eslint/*'
+          - '@testing-library/*'
+          - '@types/*'
+          - 'eslint*'
+          - 'prettier*'
+          - 'jest*'
+        dependency-type: 'development'
       # Group Next.js related packages
       nextjs:
         patterns:
-          - "next"
-          - "@next/*"
-        dependency-type: "production"
+          - 'next'
+          - '@next/*'
+        dependency-type: 'production'
       # Group Tailwind CSS packages
       tailwind:
         patterns:
-          - "tailwindcss"
-          - "@tailwindcss/*"
-        dependency-type: "production"
+          - 'tailwindcss'
+          - '@tailwindcss/*'
+        dependency-type: 'production'
     # Ignore specific dependencies if needed
     ignore:
       # Add any dependencies that should not be updated automatically
@@ -44,13 +44,13 @@ updates:
       #   versions: ["1.x", "2.x"]
     # Labels to apply to PRs
     labels:
-      - "dependencies"
-      - "automated"
+      - 'dependencies'
+      - 'automated'
     # Commit message configuration
     commit-message:
-      prefix: "chore"
-      prefix-development: "chore"
-      include: "scope"
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
     # PR title configuration
     pull-request-branch-name:
-      separator: "-"
+      separator: '-'
