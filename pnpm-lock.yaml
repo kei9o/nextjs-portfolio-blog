@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@tailwindcss/postcss':
         specifier: 4.0.0-alpha.13
-        version: 4.0.0-alpha.13(postcss@8.5.6)
+        version: 4.0.0-alpha.13(postcss@8.4.35)
       '@types/node':
         specifier: 20.11.17
         version: 20.11.17
@@ -36,8 +36,8 @@ importers:
         specifier: ^4.4.1
         version: 4.4.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       postcss:
-        specifier: ^8.5.6
-        version: 8.5.6
+        specifier: ^8.4.35
+        version: 8.4.35
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -2382,11 +2382,6 @@ packages:
   ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
-  nanoid@3.3.11:
-    resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
-    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-
   nanoid@3.3.7:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -2587,8 +2582,8 @@ packages:
     resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
     engines: {node: ^10 || ^12 || >=14}
 
-  postcss@8.5.6:
-    resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
+  postcss@8.4.35:
+    resolution: {integrity: sha512-u5U8qYpBCpN13BsiEB0CbR1Hhh4Gc0zLFuedrHJKMctHCHAGrMdG0PRM/KErzAL3CU6/eckEtmHNB3x6e3c0vA==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -2791,10 +2786,6 @@ packages:
 
   source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
-    engines: {node: '>=0.10.0'}
-
-  source-map-js@1.2.1:
-    resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
   source-map-support@0.5.13:
@@ -3840,11 +3831,11 @@ snapshots:
       '@tailwindcss/oxide-linux-x64-musl': 4.0.0-alpha.13
       '@tailwindcss/oxide-win32-x64-msvc': 4.0.0-alpha.13
 
-  '@tailwindcss/postcss@4.0.0-alpha.13(postcss@8.5.6)':
+  '@tailwindcss/postcss@4.0.0-alpha.13(postcss@8.4.35)':
     dependencies:
       '@tailwindcss/oxide': 4.0.0-alpha.13
       lightningcss: 1.24.1
-      postcss-import: 16.1.0(postcss@8.5.6)
+      postcss-import: 16.1.0(postcss@8.4.35)
       tailwindcss: 4.0.0-alpha.13
     transitivePeerDependencies:
       - postcss
@@ -6072,8 +6063,6 @@ snapshots:
 
   ms@2.1.2: {}
 
-  nanoid@3.3.11: {}
-
   nanoid@3.3.7: {}
 
   napi-postinstall@0.3.0: {}
@@ -6270,9 +6259,9 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
-  postcss-import@16.1.0(postcss@8.5.6):
+  postcss-import@16.1.0(postcss@8.4.35):
     dependencies:
-      postcss: 8.5.6
+      postcss: 8.4.35
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.8
@@ -6285,11 +6274,11 @@ snapshots:
       picocolors: 1.0.0
       source-map-js: 1.0.2
 
-  postcss@8.5.6:
+  postcss@8.4.35:
     dependencies:
-      nanoid: 3.3.11
-      picocolors: 1.1.1
-      source-map-js: 1.2.1
+      nanoid: 3.3.7
+      picocolors: 1.0.0
+      source-map-js: 1.0.2
 
   prelude-ls@1.2.1: {}
 
@@ -6524,8 +6513,6 @@ snapshots:
   slash@3.0.0: {}
 
   source-map-js@1.0.2: {}
-
-  source-map-js@1.2.1: {}
 
   source-map-support@0.5.13:
     dependencies:
