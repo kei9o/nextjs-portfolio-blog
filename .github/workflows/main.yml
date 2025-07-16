@@ -158,6 +158,29 @@ jobs:
             echo "Node.js version: $(node --version)"
             echo "PM2 version: $(pm2 --version)"
 
+            # Check nginx status and start if needed
+            echo "Checking nginx status..."
+            if systemctl is-active --quiet nginx; then
+              echo "✅ nginx is running"
+              systemctl status nginx --no-pager
+            else
+              echo "⚠️ nginx is not running. Starting nginx..."
+              sudo systemctl start nginx
+              sudo systemctl enable nginx
+              echo "✅ nginx started and enabled"
+              systemctl status nginx --no-pager
+            fi
+
+            # Test nginx configuration
+            echo "nginx configuration test:"
+            sudo nginx -t
+
+            # Check port usage
+            echo "Port 80 status:"
+            sudo ss -tlnp | grep :80 || true
+            echo "Port 443 status:"
+            sudo ss -tlnp | grep :443 || true
+
             # Install production dependencies
             if [ -n "${{ secrets.ENV_FILE_PRODUCTION }}" ]; then
               echo "${{ secrets.ENV_FILE_PRODUCTION }}" > .env.production
@@ -204,6 +227,45 @@ jobs:
             fi
 
             echo "Health check passed - Application is running successfully"
+
+            # Check nginx and Next.js application integration
+            echo ""
+            echo "Checking nginx and application integration..."
+
+            # Verify nginx is still running
+            if systemctl is-active --quiet nginx; then
+              echo "✅ nginx is active"
+            else
+              echo "❌ nginx is not running after deployment"
+              sudo journalctl -u nginx -n 20 --no-pager
+              exit 1
+            fi
+
+            # Check recent nginx access logs
+            echo ""
+            echo "Recent nginx access logs:"
+            sudo tail -n 10 /var/log/nginx/access.log 2>/dev/null || echo "No access logs available"
+
+            # Check error logs
+            echo ""
+            echo "Recent nginx error logs:"
+            sudo tail -n 10 /var/log/nginx/error.log 2>/dev/null || echo "No error logs available"
+
+            # Test local application response
+            echo ""
+            echo "Testing local application response:"
+            RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 || echo "000")
+            if [ "$RESPONSE_CODE" = "200" ]; then
+              echo "✅ Application is responding correctly (HTTP $RESPONSE_CODE)"
+            else
+              echo "❌ Application response failed (HTTP $RESPONSE_CODE)"
+              echo "Checking PM2 logs for issues:"
+              pm2 logs nextjs-portfolio-blog --lines 20
+              exit 1
+            fi
+
+            echo ""
+            echo "All health checks passed successfully!"
 
       - name: Comment PR - Deployment Successful
         if: steps.pr_number.outputs.pr_found == 'true'
