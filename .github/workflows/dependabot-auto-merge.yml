@@ -50,9 +50,9 @@ jobs:
             const ref = context.payload.pull_request.head.sha;
             let attempts = 0;
             const maxAttempts = 30; // 5 minutes with 10 second intervals
-            
+
             console.log(`Waiting for check '${checkName}' on ref ${ref}`);
-            
+
             while (attempts < maxAttempts) {
               const { data: checkRuns } = await github.rest.checks.listForRef({
                 owner: context.repo.owner,
@@ -80,7 +80,7 @@ jobs:
               await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds
               attempts++;
             }
-            
+
             throw new Error('Timeout waiting for check to complete');
 
       - name: Approve PR
