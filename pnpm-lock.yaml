@@ -27,8 +27,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0(next@15.4.2-canary.2(@babel/core@7.28.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)
       geist:
-        specifier: 1.2.2
-        version: 1.2.2(next@15.4.2-canary.2(@babel/core@7.28.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        specifier: 1.4.2
+        version: 1.4.2(next@15.4.2-canary.2(@babel/core@7.28.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       next:
         specifier: canary
         version: 15.4.2-canary.2(@babel/core@7.28.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1730,10 +1730,10 @@ packages:
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
 
-  geist@1.2.2:
-    resolution: {integrity: sha512-uRDrxhvdnPwWJmh+K5+/5LXSKwvJzaYCl9tDXgiBi4hj7hB4K7+n/WLcvJMFs5btvyn0r9OSwCd1s6CmqAsxEw==}
+  geist@1.4.2:
+    resolution: {integrity: sha512-OQUga/KUc8ueijck6EbtT07L4tZ5+TZgjw8PyWfxo16sL5FWk7gNViPNU8hgCFjy6bJi9yuTP+CRpywzaGN8zw==}
     peerDependencies:
-      next: '>=13.2.0 <15'
+      next: '>=13.2.0'
 
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
@@ -5128,7 +5128,7 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
-  geist@1.2.2(next@15.4.2-canary.2(@babel/core@7.28.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)):
+  geist@1.4.2(next@15.4.2-canary.2(@babel/core@7.28.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)):
     dependencies:
       next: 15.4.2-canary.2(@babel/core@7.28.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
 
