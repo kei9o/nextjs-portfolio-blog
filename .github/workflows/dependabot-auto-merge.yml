@@ -43,12 +43,45 @@ jobs:
 
       - name: Wait for PR checks to complete
         if: steps.auto-merge-check.outputs.auto_merge == 'true'
-        uses: lewagon/wait-on-check-action@v1.3.4
+        uses: actions/github-script@v7
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          check-name: 'validate-pr'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
+          script: |
+            const checkName = 'validate-pr';
+            const ref = context.payload.pull_request.head.sha;
+            let attempts = 0;
+            const maxAttempts = 30; // 5 minutes with 10 second intervals
+            
+            console.log(`Waiting for check '${checkName}' on ref ${ref}`);
+            
+            while (attempts < maxAttempts) {
+              const { data: checkRuns } = await github.rest.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: ref
+              });
+              
+              const check = checkRuns.check_runs.find(run => run.name === checkName);
+              
+              if (check) {
+                console.log(`Check ${checkName} status: ${check.status}, conclusion: ${check.conclusion || 'N/A'}`);
+                if (check.status === 'completed') {
+                  if (check.conclusion === 'success') {
+                    console.log('✅ Check passed!');
+                    return;
+                  } else {
+                    throw new Error(`Check failed with conclusion: ${check.conclusion}`);
+                  }
+                }
+              } else {
+                console.log(`Check ${checkName} not found yet...`);
+              }
+              
+              console.log(`Attempt ${attempts + 1}/${maxAttempts} - Waiting 10 seconds...`);
+              await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds
+              attempts++;
+            }
+            
+            throw new Error('Timeout waiting for check to complete');
 
       - name: Approve PR
         if: steps.auto-merge-check.outputs.auto_merge == 'true'
