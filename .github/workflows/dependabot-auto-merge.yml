@@ -112,6 +112,25 @@ jobs:
             const updateType = '${{ steps.dependabot-metadata.outputs.update-type }}';
             const dependencyNames = '${{ steps.dependabot-metadata.outputs.dependency-names }}';
 
+            // Check for existing comments to prevent duplicates
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+
+            // Look for existing bot comment about manual review
+            const existingComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('🔍 Manual Review Required') &&
+              comment.body.includes(dependencyNames)
+            );
+
+            if (existingComment) {
+              console.log('Manual review comment already exists, skipping duplicate comment');
+              return;
+            }
+
             const comment = `## 🔍 Manual Review Required
 
             This Dependabot PR requires manual review because:
@@ -122,9 +141,11 @@ jobs:
 
             Please review the changes and merge manually if appropriate.`;
 
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: comment
             });
+
+            console.log('Posted manual review comment for major version update');
