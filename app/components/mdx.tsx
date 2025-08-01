@@ -53,7 +53,10 @@ function RoundedImage(props: React.ComponentProps<typeof Image>) {
   return <Image className='rounded-lg' {...props} />
 }
 
-function Code({ children, ...props }: { children: string } & React.HTMLAttributes<HTMLElement>) {
+function Code({
+  children,
+  ...props
+}: { children: string } & React.HTMLAttributes<HTMLElement>) {
   const codeHTML = highlight(children)
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />
 }

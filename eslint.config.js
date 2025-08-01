@@ -45,6 +45,8 @@ export default [
         Request: 'readonly',
         Response: 'readonly',
         React: 'readonly',
+        HTMLElement: 'readonly',
+        HTMLAnchorElement: 'readonly',
       },
     },
     plugins: {
