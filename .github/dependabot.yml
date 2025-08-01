@@ -1,0 +1,51 @@
+# Dependabot configuration
+# See https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  # JavaScript dependencies
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 10
+    # Group non-critical updates
+    groups:
+      # Group all development dependencies
+      dev-dependencies:
+        patterns:
+          - '@eslint/*'
+          - '@typescript-eslint/*'
+          - '@testing-library/*'
+          - '@types/*'
+          - 'eslint*'
+          - 'prettier*'
+          - 'jest*'
+        dependency-type: 'development'
+      # Group Next.js related packages
+      nextjs:
+        patterns:
+          - 'next'
+          - '@next/*'
+        dependency-type: 'production'
+      # Group Tailwind CSS packages
+      tailwind:
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/*'
+        dependency-type: 'production'
+    # Labels to apply to PRs
+    labels:
+      - 'dependencies'
+      - 'automated'
+    # Commit message configuration
+    commit-message:
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
+    # PR title configuration
+    pull-request-branch-name:
+      separator: '-'

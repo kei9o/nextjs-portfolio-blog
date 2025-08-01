@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -6,31 +7,47 @@
     "start": "next start",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@tailwindcss/postcss": "4.0.0-alpha.13",
+    "@tailwindcss/postcss": "4.1.11",
     "@types/node": "20.11.17",
     "@types/react": "18.2.55",
     "@types/react-dom": "18.2.19",
-    "@vercel/analytics": "^1.1.3",
-    "@vercel/speed-insights": "^1.0.9",
-    "geist": "1.2.2",
-    "next": "canary",
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
+    "geist": "1.4.2",
+    "next": "14.2.0",
     "next-mdx-remote": "^4.4.1",
     "postcss": "^8.4.35",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "sugar-high": "^0.6.0",
-    "tailwindcss": "4.0.0-alpha.13",
-    "typescript": "5.3.3"
+    "sugar-high": "^0.9.3",
+    "tailwindcss": "4.1.11",
+    "typescript": "5.8.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.31.0",
+    "@next/eslint-plugin-next": "^15.3.5",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^30.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "jest": "^30.0.4",
-    "jest-environment-jsdom": "^30.0.4"
+    "jest-environment-jsdom": "^30.0.4",
+    "prettier": "^3.6.2"
   }
 }

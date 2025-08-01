@@ -15,15 +15,15 @@ beforeAll(() => {
         super('2024-01-01T00:00:00.000Z')
       }
     }
-    
+
     static now() {
       return new originalDate('2024-01-01T00:00:00.000Z').getTime()
     }
-    
+
     getFullYear() {
       return MOCK_YEAR
     }
-  } as any
+  } as typeof Date
 })
 
 afterAll(() => {
@@ -35,23 +35,23 @@ const expectedLinks = [
   {
     text: 'X',
     href: 'https://x.com/kei9o_',
-    testId: 'social-link-x'
+    testId: 'social-link-x',
   },
   {
-    text: 'LinkedIn', 
+    text: 'LinkedIn',
     href: 'https://www.linkedin.com/in/keigo-yamauchi-778304273/',
-    testId: 'social-link-linkedin'
+    testId: 'social-link-linkedin',
   },
   {
     text: 'github',
     href: 'https://github.com/kei9o',
-    testId: 'social-link-github'
+    testId: 'social-link-github',
   },
   {
     text: 'view source',
     href: 'https://github.com/kei9o/nextjs-portfolio-blog',
-    testId: 'social-link-source'
-  }
+    testId: 'social-link-source',
+  },
 ]
 
 describe('Footer Component', () => {
@@ -82,7 +82,6 @@ describe('Footer Component', () => {
   })
 
   describe('Social Links', () => {
-
     it('renders all social links with correct text and URLs', () => {
       expectedLinks.forEach(({ text, href }) => {
         const link = screen.getByRole('link', { name: text })
@@ -114,10 +113,12 @@ describe('Footer Component', () => {
 
     it('renders arrow icons in each social link', () => {
       const links = screen.getAllByRole('link')
-      const socialLinks = links.filter(link => 
-        expectedLinks.some(expected => link.getAttribute('href') === expected.href)
+      const socialLinks = links.filter(link =>
+        expectedLinks.some(
+          expected => link.getAttribute('href') === expected.href
+        )
       )
-      
+
       socialLinks.forEach(link => {
         const svg = link.querySelector('svg')
         expect(svg).toBeInTheDocument()
@@ -173,7 +174,7 @@ describe('Footer Component', () => {
     it('external links have proper ARIA attributes', () => {
       expectedLinks.forEach(({ text }) => {
         const link = screen.getByRole('link', { name: text })
-        // While not explicitly set, external links with target="_blank" 
+        // While not explicitly set, external links with target="_blank"
         // should have security attributes for accessibility
         expect(link).toHaveAttribute('rel', 'noopener noreferrer')
       })
@@ -184,9 +185,9 @@ describe('Footer Component', () => {
     it('renders SVG with correct attributes', () => {
       const footer = screen.getByRole('contentinfo')
       const svgs = footer.querySelectorAll('svg')
-      
+
       expect(svgs).toHaveLength(4) // One for each social link
-      
+
       svgs.forEach(svg => {
         expect(svg).toHaveAttribute('width', '12')
         expect(svg).toHaveAttribute('height', '12')
@@ -199,7 +200,7 @@ describe('Footer Component', () => {
     it('renders path element with correct attributes', () => {
       const footer = screen.getByRole('contentinfo')
       const svgs = footer.querySelectorAll('svg')
-      
+
       svgs.forEach(svg => {
         const path = svg.querySelector('path')
         expect(path).toBeInTheDocument()
@@ -214,24 +215,24 @@ describe('Footer Component', () => {
       const footer = screen.getByRole('contentinfo')
       const list = screen.getByRole('list')
       const copyright = screen.getByText(`© ${MOCK_YEAR} Keigo Yamauchi`)
-      
+
       // Check DOM structure order
       expect(footer).toContainElement(list)
       expect(footer).toContainElement(copyright)
-      
+
       // List should come before copyright in DOM order
       const footerChildren = Array.from(footer.children)
       const listIndex = footerChildren.indexOf(list)
       const copyrightIndex = footerChildren.indexOf(copyright)
-      
+
       expect(listIndex).toBeLessThan(copyrightIndex)
     })
 
     it('maintains consistent styling across all social links', () => {
-      const socialLinks = expectedLinks.map(({ text }) => 
+      const socialLinks = expectedLinks.map(({ text }) =>
         screen.getByRole('link', { name: text })
       )
-      
+
       const firstLinkClasses = socialLinks[0].className
       socialLinks.forEach(link => {
         expect(link).toHaveClass(...firstLinkClasses.split(' '))
