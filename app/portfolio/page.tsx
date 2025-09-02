@@ -9,7 +9,7 @@ export default function Page() {
     <section>
       <h1 className='text-2xl font-semibold tracking-tighter'>Portfolio</h1>
       <p className='mb-6 text-sm text-neutral-500 dark:text-neutral-400'>
-        Last Updated: May 7, 2025
+        Last Updated: September 2, 2025
       </p>
 
       <div className='mb-8'>
@@ -47,7 +47,7 @@ export default function Page() {
         <h3 className='font-medium mb-2'>Programming Languages:</h3>
         <ul className='list-disc pl-5 mb-4 text-neutral-700 dark:text-neutral-300'>
           <li>
-            Ruby: 10 months (Experience in web application development in a
+            Ruby: 1 year (Experience in web application development in a
             professional setting)
           </li>
           <li>JavaScript: 1 year 6 months (Capable of basic programming)</li>
@@ -69,13 +69,16 @@ export default function Page() {
           </li>
           <li>CUDA: 6 months (Capable of basic programming)</li>
           <li>C: 6 months (Capable of basic programming)</li>
+          <li>
+            TypeScript: 4 months (Reference-based implementation capabilities)
+          </li>
         </ul>
 
         <h3 className='font-medium mb-2'>Frameworks/Libraries:</h3>
         <ul className='list-disc pl-5 mb-4 text-neutral-700 dark:text-neutral-300'>
           <li>
-            Ruby on Rails: 10 months (Experience in web application development
-            in a professional setting)
+            Ruby on Rails: 1 year (Experience in web application development in
+            a professional setting)
           </li>
           <li>
             Next.js: 2 months (Capable of implementing basic applications;
@@ -85,11 +88,12 @@ export default function Page() {
             DirectX 12: 1 year (Capable of implementing applications including
             environment setup and GUI)
           </li>
+          <li>React: 4 months (Reference-based implementation capabilities)</li>
         </ul>
 
         <h3 className='font-medium mb-2'>Databases:</h3>
         <ul className='list-disc pl-5 mb-4 text-neutral-700 dark:text-neutral-300'>
-          <li>MySQL: 10 months (Experience using in a professional setting)</li>
+          <li>MySQL: 1 year (Experience using in a professional setting)</li>
           <li>
             PostgreSQL: 2 months (Capable from installation to table creation)
           </li>
@@ -99,7 +103,7 @@ export default function Page() {
         <h3 className='font-medium mb-2'>Cloud Platforms:</h3>
         <ul className='list-disc pl-5 mb-4 text-neutral-700 dark:text-neutral-300'>
           <li>
-            AWS: 1 year 6 months (Experience building and operating in a
+            AWS: 2 years 6 months (Experience building and operating in a
             professional setting)
           </li>
           <li>GCP (BigQuery): 3 months (Experience using APIs)</li>
@@ -417,7 +421,11 @@ export default function Page() {
             March 2024: Completed Hokkaido University, Graduate School of
             Information Science and Technology
           </li>
-          <li>Major: Information science</li>
+          <li>
+            Major: Advanced communication technologies such as optical and
+            wireless communication, and multimedia information science including
+            AI and CG.
+          </li>
         </ul>
 
         <h2 className='text-lg font-medium mb-3'>Licenses & Certifications</h2>
@@ -426,6 +434,7 @@ export default function Page() {
             Regular Passenger Vehicle Driver's License (Class 1) (Acquired June
             2020)
           </li>
+          <li>TOEIC® Listening & Reading Test 725 points (July 2018)</li>
         </ul>
 
         <h2 className='text-lg font-medium mb-3'>Awards & Presentations</h2>
