@@ -42,3 +42,6 @@ next-env.d.ts
 # claude and gemini config files
 CLAUDE.md
 GEMINI.md
+
+# temporary files
+tmp/
